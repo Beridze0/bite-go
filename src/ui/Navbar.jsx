@@ -10,7 +10,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`flex items-center justify-between py-4 px-10 sticky top-0 bg-[#FEC54A]`}
+      className={`flex items-center justify-between py-4 px-10 sticky top-0 z-50 bg-[#FEC54A]`}
     >
       <Logo />
       {pathname !== "/login" && <LoginButton />}

@@ -13,6 +13,50 @@ import papajohns from "../assets/papa-johns.jpg";
 import tacobell from "../assets/tacobell.jpg";
 import subway from "../assets/subway.jpg";
 import carrefour from "../assets/carrefour.jpg";
+import Feature from "../components/features/Feature";
+
+const features = [
+  {
+    id: 1,
+    title: "Your city's top restaurants",
+    text: (
+      <>
+        With a great variety of restaurants you can order your favourite food or{" "}
+        <span className="bg-amber-500 rounded-lg px-1 box-decoration-clone">
+          explore new restaurants nearby!
+        </span>
+      </>
+    ),
+    image: burger,
+  },
+  {
+    id: 2,
+    title: "Groceries delivery & more",
+    text: (
+      <>
+        Find anything you need! From{" "}
+        <span className="bg-amber-500 rounded-lg px-1 box-decoration-clone">
+          supermarkets to shops, pharmacies to florists
+        </span>{" "}
+        — if it's in your city order it and receive it.
+      </>
+    ),
+    image: burger,
+  },
+  {
+    id: 3,
+    title: "Fast delivery",
+    text: (
+      <>
+        Like a flash! Order or send anything in your city and{" "}
+        <span className="bg-amber-500 rounded-lg px-1 box-decoration-clone">
+          receive it in minutes
+        </span>
+      </>
+    ),
+    image: burger,
+  },
+];
 
 const restaurants = [
   { name: "McDonald's", img: mc },
@@ -59,6 +103,16 @@ export default function LandingPage() {
         <div className="grid grid-cols-4 gap-y-10 gap-x-15 content-center mx-auto ">
           {restaurants.map((res) => (
             <Restaurant key={res.name} res={res} />
+          ))}
+        </div>
+      </div>
+
+      {/* THIRD */}
+      <div className="mt-15 flex flex-col gap-10">
+        <h1 className="text-4xl text-center font-bold">Anything delivered</h1>
+        <div className="grid grid-cols-3 mx-20">
+          {features.map((feature) => (
+            <Feature key={feature.id} feature={feature} />
           ))}
         </div>
       </div>
