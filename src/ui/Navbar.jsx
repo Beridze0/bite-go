@@ -1,7 +1,8 @@
 import React from "react";
-import Logo from "../components/landing/Logo";
-import LoginButton from "../components/landing/LoginButton";
 import { useLocation } from "react-router-dom";
+import Button from "../components/landing/Button";
+import Logo from "../components/landing/Logo";
+import { IoPersonOutline } from "react-icons/io5";
 
 export default function Navbar() {
   const location = useLocation();
@@ -13,7 +14,7 @@ export default function Navbar() {
       className={`flex items-center justify-between py-4 px-10 sticky top-0 z-50 bg-[#FEC54A]`}
     >
       <Logo />
-      {pathname !== "/login" && <LoginButton />}
+      {pathname !== "/login" && <Button icon={IoPersonOutline}>Login</Button>}
     </nav>
   );
 }

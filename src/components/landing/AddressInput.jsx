@@ -4,7 +4,7 @@ import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import { IoLocationOutline } from "react-icons/io5";
 import CloseBtn from "../../ui/CloseBtn";
 import CurrentLocationBtn from "../../ui/CurrentLocationBtn";
-import Modal from "./Modal";
+import Modal from "./modal/Modal";
 
 export default function AddressInput() {
   const [isMounted, setIsMounted] = useState(false);
