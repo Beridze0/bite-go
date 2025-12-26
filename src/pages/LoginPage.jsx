@@ -12,9 +12,6 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col items-center  h-screen bg-white relative">
-      <div className="w-full">
-        <Navbar />
-      </div>
       <div className="flex flex-col gap-5 items-center mt-5">
         <div className="flex w-full justify-end">
           <CloseBtn onClick={() => navigate(-1)} />
