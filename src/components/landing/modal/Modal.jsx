@@ -3,10 +3,20 @@ import CloseBtn from "../../../ui/CloseBtn";
 
 import ConfirmLocationStep from "./ConfirmLocationStep";
 import SearchStep from "./SearchStep";
+import { useDispatch } from "react-redux";
+import { setLocation } from "../../../slices/locationSlice";
 
 export default function Modal({ isVisible, closeModal }) {
+  const dispatch = useDispatch();
+
   const [step, setStep] = useState("search");
-  const [location, setLocation] = useState({});
+
+  const [locationData, setLocationData] = useState({
+    lat: null,
+    lng: null,
+    address: "",
+    label: "",
+  });
 
   useEffect(
     function () {
@@ -24,6 +34,11 @@ export default function Modal({ isVisible, closeModal }) {
   );
 
   function handleOverlayClick() {
+    closeModal();
+  }
+
+  function handleConfirm() {
+    dispatch(setLocation({ ...locationData, isConfirmed: true }));
     closeModal();
   }
 
@@ -50,11 +65,17 @@ export default function Modal({ isVisible, closeModal }) {
           <SearchStep
             isVisible={isVisible}
             onSuccess={() => setStep("confirm")}
-            setLocation={setLocation}
+            setLocationData={setLocationData}
           />
         )}
 
-        {step === "confirm" && <ConfirmLocationStep location={location} />}
+        {step === "confirm" && (
+          <ConfirmLocationStep
+            setLocationData={setLocation}
+            locationData={locationData}
+            onConfirm={handleConfirm}
+          />
+        )}
       </div>
     </div>
   );

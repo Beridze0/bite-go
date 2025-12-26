@@ -1,9 +1,21 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
+import { useDispatch } from "react-redux";
+import { useAddressSuggestions } from "../../../hooks/useAddressSuggestions";
+import { useGeolocation } from "../../../hooks/useGeolocation";
 import CurrentLocationBtn from "../../../ui/CurrentLocationBtn";
+import SuggestedAddress from "./SuggestedAddress";
 
-export default function SearchStep({ isVisible, onSuccess, setLocation }) {
+const API_KEY = import.meta.env.VITE_API_KEY;
+
+export default function SearchStep({ isVisible, onSuccess, setLocationData }) {
+  const [address, setAddress] = useState("");
+
   const inputRef = useRef();
+
+  const { location, getLocation } = useGeolocation();
+
+  const dispatch = useDispatch();
 
   useEffect(
     function () {
@@ -14,10 +26,22 @@ export default function SearchStep({ isVisible, onSuccess, setLocation }) {
     [isVisible]
   );
 
-  // function handleSubmit(e) {
-  //   e.preventDefault();
-  //   onSucces();
-  // }
+  useEffect(() => {
+    if (!location) return;
+
+    setLocationData((prev) => ({
+      ...prev,
+      lat: location.lat,
+      lng: location.lng,
+      address: location.address,
+    }));
+    onSuccess();
+  }, [location, dispatch, onSuccess]);
+
+  const { suggestions, isLoading, error } = useAddressSuggestions(
+    address,
+    API_KEY
+  );
 
   return (
     <div className="flex flex-col gap-7">
@@ -32,15 +56,32 @@ export default function SearchStep({ isVisible, onSuccess, setLocation }) {
         <input
           ref={inputRef}
           placeholder="Search address"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
           className="text-lg w-full outline-none"
         />
       </div>
 
-      <CurrentLocationBtn
-        className="w-full"
-        onSuccess={onSuccess}
-        setLocation={setLocation}
-      />
+      {isLoading && (
+        <div
+          className={`self-center w-6 h-6 border-2 border-t-transparent border-solid rounded-full animate-spin`}
+        ></div>
+      )}
+
+      {address && suggestions && !isLoading && (
+        <ul className="flex flex-col gap-3">
+          {suggestions.map((suggestion) => (
+            <SuggestedAddress
+              key={suggestion.lat}
+              suggestion={suggestion}
+              onSuccess={onSuccess}
+              setLocationData={setLocationData}
+            />
+          ))}
+        </ul>
+      )}
+
+      <CurrentLocationBtn className="w-full" onClick={getLocation} />
     </div>
   );
 }

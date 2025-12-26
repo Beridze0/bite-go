@@ -14,7 +14,7 @@ L.Icon.Default.mergeOptions({
 
 export default function MiniMap({ lat, lng }) {
   return (
-    <div className="w-full h-[220px] rounded-xl overflow-hidden">
+    <div className="w-full h-55 rounded-xl overflow-hidden">
       <MapContainer
         center={[lat, lng]}
         zoom={16}
@@ -23,7 +23,7 @@ export default function MiniMap({ lat, lng }) {
       >
         <TileLayer
           attribution="&copy; OpenStreetMap contributors"
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
         <Marker position={[lat, lng]} />
       </MapContainer>
