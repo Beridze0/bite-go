@@ -9,7 +9,7 @@ import { setLocation } from "../../../slices/locationSlice";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-export default function SearchStep({ isVisible, onSuccess }) {
+export default function SearchStep({ isVisible, onSuccess, autoLocate }) {
   const [address, setAddress] = useState("");
 
   const inputRef = useRef();
@@ -23,8 +23,11 @@ export default function SearchStep({ isVisible, onSuccess }) {
       if (isVisible) {
         inputRef.current.focus();
       }
+      if (autoLocate && isVisible) {
+        getLocation();
+      }
     },
-    [isVisible]
+    [isVisible, autoLocate, getLocation]
   );
 
   useEffect(() => {
@@ -34,10 +37,7 @@ export default function SearchStep({ isVisible, onSuccess }) {
     onSuccess();
   }, [location, dispatch, onSuccess]);
 
-  const { suggestions, isLoading, error } = useAddressSuggestions(
-    address,
-    API_KEY
-  );
+  const { suggestions, isLoading } = useAddressSuggestions(address, API_KEY);
 
   return (
     <div className="flex flex-col gap-7">

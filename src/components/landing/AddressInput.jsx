@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import { IoLocationOutline } from "react-icons/io5";
-import CloseBtn from "../../ui/CloseBtn";
 import CurrentLocationBtn from "../../ui/CurrentLocationBtn";
 import Modal from "./modal/Modal";
 
 export default function AddressInput() {
   const [isMounted, setIsMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [autoLocate, setAutoLocate] = useState(false);
 
-  function openModal() {
+  function openModal(auto = false) {
+    setAutoLocate(auto);
     setIsMounted(true);
     requestAnimationFrame(() => setIsVisible(true));
   }
 
   function closeModal() {
     setIsVisible(false);
+    setAutoLocate(false);
   }
 
   useEffect(() => {
@@ -33,11 +34,15 @@ export default function AddressInput() {
         <p className="text-lg text-gray-500">What's your address?</p>
       </div>
 
-      <CurrentLocationBtn />
+      <CurrentLocationBtn onClick={() => openModal(true)} />
 
       {isMounted &&
         createPortal(
-          <Modal isVisible={isVisible} closeModal={closeModal} />,
+          <Modal
+            isVisible={isVisible}
+            closeModal={closeModal}
+            autoLocate={autoLocate}
+          />,
           document.body
         )}
     </div>

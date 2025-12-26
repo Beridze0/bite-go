@@ -7,7 +7,7 @@ import ConfirmLocationStep from "./ConfirmLocationStep";
 import SearchStep from "./SearchStep";
 import { useNavigate } from "react-router-dom";
 
-export default function Modal({ isVisible, closeModal }) {
+export default function Modal({ isVisible, closeModal, autoLocate }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -35,7 +35,7 @@ export default function Modal({ isVisible, closeModal }) {
   function handleConfirm() {
     dispatch(confirmLocation());
     closeModal();
-    navigate("/restaurants");
+    navigate("/marketplace");
   }
 
   return (
@@ -60,6 +60,7 @@ export default function Modal({ isVisible, closeModal }) {
         {step === "search" && (
           <SearchStep
             isVisible={isVisible}
+            autoLocate={autoLocate}
             onSuccess={() => setStep("confirm")}
           />
         )}
