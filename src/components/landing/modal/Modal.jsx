@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from "react";
 import CloseBtn from "../../../ui/CloseBtn";
 
+import { useDispatch } from "react-redux";
+import { confirmLocation } from "../../../slices/locationSlice";
 import ConfirmLocationStep from "./ConfirmLocationStep";
 import SearchStep from "./SearchStep";
-import { useDispatch } from "react-redux";
-import { setLocation } from "../../../slices/locationSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Modal({ isVisible, closeModal }) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [step, setStep] = useState("search");
-
-  const [locationData, setLocationData] = useState({
-    lat: null,
-    lng: null,
-    address: "",
-    label: "",
-  });
 
   useEffect(
     function () {
@@ -38,8 +33,9 @@ export default function Modal({ isVisible, closeModal }) {
   }
 
   function handleConfirm() {
-    dispatch(setLocation({ ...locationData, isConfirmed: true }));
+    dispatch(confirmLocation());
     closeModal();
+    navigate("/restaurants");
   }
 
   return (
@@ -65,16 +61,11 @@ export default function Modal({ isVisible, closeModal }) {
           <SearchStep
             isVisible={isVisible}
             onSuccess={() => setStep("confirm")}
-            setLocationData={setLocationData}
           />
         )}
 
         {step === "confirm" && (
-          <ConfirmLocationStep
-            setLocationData={setLocation}
-            locationData={locationData}
-            onConfirm={handleConfirm}
-          />
+          <ConfirmLocationStep onConfirm={handleConfirm} />
         )}
       </div>
     </div>

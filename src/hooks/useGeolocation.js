@@ -1,5 +1,7 @@
 import { useCallback, useState } from "react";
 
+const API_KEY = import.meta.env.VITE_API_KEY;
+
 export function useGeolocation() {
   const [location, setLocation] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -14,11 +16,24 @@ export function useGeolocation() {
     setIsLoading(true);
 
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
+      async (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+
+        const res = await fetch(
+          `https://api.locationiq.com/v1/reverse.php?key=${API_KEY}&lat=${lat}&lon=${lng}&format=json`
+        );
+
+        const data = await res.json();
+
+        console.log(data);
+
         setLocation({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
+          lat,
+          lng,
+          address: data.address.road || data.display_name,
         });
+
         setIsLoading(false);
       },
       (err) => {

@@ -1,9 +1,9 @@
 import React from "react";
+import { IoLocationOutline, IoPersonOutline } from "react-icons/io5";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Button from "../components/landing/Button";
 import Logo from "../components/landing/Logo";
-import { IoPersonOutline } from "react-icons/io5";
-import { useSelector } from "react-redux";
 
 export default function Navbar() {
   const location = useLocation();
@@ -11,7 +11,6 @@ export default function Navbar() {
   const { pathname } = location;
 
   const userLocation = useSelector((state) => state.location);
-  console.log(userLocation);
 
   return (
     <nav
@@ -19,9 +18,16 @@ export default function Navbar() {
         pathname === "/login" ? "bg-white" : "bg-[#FEC54A]"
       }`}
     >
-      <div>
+      <div className="flex items-center gap-4">
         <Logo />
-        {userLocation && <p></p>}
+        {userLocation.address && (
+          <p className="py-2 font-bold px-3 rounded-3xl bg-white flex items-center gap-1">
+            <span>
+              <IoLocationOutline size={22} />
+            </span>
+            {userLocation.address}
+          </p>
+        )}
       </div>
       {pathname !== "/login" && <Button icon={IoPersonOutline}>Login</Button>}
     </nav>

@@ -13,12 +13,14 @@ const locationSlice = createSlice({
   initialState,
   reducers: {
     setLocation(state, action) {
-      const { lat, lng, address, label } = action.payload;
+      const { lat, lng, address } = action.payload;
       state.lat = lat;
       state.lng = lng;
       state.address = address;
+    },
+    setLabel(state, action) {
+      const { label } = action.payload;
       state.label = label;
-      state.isConfirmed = false;
     },
     confirmLocation(state) {
       state.isConfirmed = true;
@@ -30,5 +32,5 @@ const locationSlice = createSlice({
 });
 
 export default locationSlice.reducer;
-export const { setLocation, confirmLocation, clearLocation } =
+export const { setLocation, setLabel, confirmLocation, clearLocation } =
   locationSlice.actions;

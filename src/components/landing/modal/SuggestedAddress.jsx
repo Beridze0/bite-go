@@ -1,11 +1,11 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { setLocation } from "../../../slices/locationSlice";
 
-export default function SuggestedAddress({
-  suggestion,
-  setLocationData,
-  onSuccess,
-}) {
+export default function SuggestedAddress({ suggestion, onSuccess }) {
   console.log(suggestion);
+
+  const dispatch = useDispatch();
 
   const location = {
     lat: suggestion.lat,
@@ -14,7 +14,12 @@ export default function SuggestedAddress({
   };
 
   function handleSuggestedAddress() {
-    setLocationData((prev) => ({ ...prev, ...location }));
+    // UPDATE REDUX
+    //////
+    ///////
+    ////
+    dispatch(setLocation(location));
+
     onSuccess();
   }
   return (

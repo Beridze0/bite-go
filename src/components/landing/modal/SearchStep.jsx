@@ -5,10 +5,11 @@ import { useAddressSuggestions } from "../../../hooks/useAddressSuggestions";
 import { useGeolocation } from "../../../hooks/useGeolocation";
 import CurrentLocationBtn from "../../../ui/CurrentLocationBtn";
 import SuggestedAddress from "./SuggestedAddress";
+import { setLocation } from "../../../slices/locationSlice";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-export default function SearchStep({ isVisible, onSuccess, setLocationData }) {
+export default function SearchStep({ isVisible, onSuccess }) {
   const [address, setAddress] = useState("");
 
   const inputRef = useRef();
@@ -29,12 +30,7 @@ export default function SearchStep({ isVisible, onSuccess, setLocationData }) {
   useEffect(() => {
     if (!location) return;
 
-    setLocationData((prev) => ({
-      ...prev,
-      lat: location.lat,
-      lng: location.lng,
-      address: location.address,
-    }));
+    dispatch(setLocation(location));
     onSuccess();
   }, [location, dispatch, onSuccess]);
 
@@ -75,7 +71,6 @@ export default function SearchStep({ isVisible, onSuccess, setLocationData }) {
               key={suggestion.lat}
               suggestion={suggestion}
               onSuccess={onSuccess}
-              setLocationData={setLocationData}
             />
           ))}
         </ul>
